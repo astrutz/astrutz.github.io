@@ -1,4 +1,6 @@
-const cacheName = 'cache-v1';
+const cachePrefix = 'cache-v';
+const cacheNum = 1;
+const cacheName = cachePrefix + cacheNum;
 const precacheResources = [
     '/js/main.min.js',
     '/',
@@ -8,6 +10,7 @@ const precacheResources = [
     '/images/icons/favicon.ico',
     '/images/icons/favicon-16x16.png',
     '/images/icons/favicon-32x32.png',
+    // TODO: Image of the day
 ];
 
 self.addEventListener('install', event => {
@@ -24,6 +27,20 @@ self.addEventListener('install', event => {
 
 self.addEventListener('activate', event => {
     console.log('Service worker',  'activated', event);
+
+    const cacheWhitelist = [cacheName];
+
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
 });
 
 self.addEventListener('fetch', event => {
