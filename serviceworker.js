@@ -1,6 +1,8 @@
 const cachePrefix = 'cache-v';
 const cacheNum = 1;
 const cacheName = cachePrefix + cacheNum;
+const headers = new Headers();
+headers.set('Cache-Control','max-age=86400');
 const precacheResources = [
     '/js/main.min.js',
     '/',
@@ -10,7 +12,8 @@ const precacheResources = [
     '/images/icons/favicon.ico',
     '/images/icons/favicon-16x16.png',
     '/images/icons/favicon-32x32.png',
-    // TODO: Image of the day
+    new Request('http://localhost:3000/api/images/single?format=portrait', {headers: headers})
+    // TODO: Image of the day from result above
 ];
 
 self.addEventListener('install', event => {
