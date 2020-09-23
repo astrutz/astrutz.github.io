@@ -12,9 +12,12 @@ const precacheResources = [
     '/images/icons/favicon.ico',
     '/images/icons/favicon-16x16.png',
     '/images/icons/favicon-32x32.png',
+    '/font/Barlow-Light.ttf',
+    '/font/Barlow-Medium.ttf',
+    '/font/Barlow-Regular.ttf',
     new Request('http://localhost:3000/api/images/single?format=portrait', {headers: headers})
-    // TODO: Image of the day from result above
 ];
+fetch('http://localhost:3000/api/images/single?format=portrait').then(response => response.json()).then(data => precacheResources.push(data.imagePath));
 
 self.addEventListener('install', event => {
     console.log('Service worker', 'installed', event);
