@@ -15,9 +15,11 @@ const precacheResources = [
     '/font/Barlow-Light.ttf',
     '/font/Barlow-Medium.ttf',
     '/font/Barlow-Regular.ttf',
-    new Request('http://localhost:3000/api/images/single?format=portrait', {headers: headers})
+    // new Request('http://localhost:3000/api/images/single?format=portrait', {headers: headers})
+    new Request('https://beiboot.herokuapp.com/api/images/single?format=portrait', {headers: headers})
 ];
-fetch('http://localhost:3000/api/images/single?format=portrait').then(response => response.json()).then(data => precacheResources.push(data.imagePath));
+// fetch('http://localhost:3000/api/images/single?format=portrait').then(response => response.json()).then(data => precacheResources.push(data.imagePath));
+fetch('https://beiboot.herokuapp.com/api/images/single?format=portrait').then(response => response.json()).then(data => precacheResources.push(data.imagePath));
 
 self.addEventListener('install', event => {
     console.log('Service worker', 'installed', event);
