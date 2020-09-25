@@ -1,6 +1,4 @@
-const cachePrefix = 'cache-v';
-const cacheNum = 1;
-const cacheName = cachePrefix + cacheNum;
+const cacheName = 'cache-v1';
 const headers = new Headers();
 headers.set('Cache-Control','max-age=86400');
 const precacheResources = [
@@ -13,7 +11,6 @@ const precacheResources = [
     '/images/icons/favicon-16x16.png',
     '/images/icons/favicon-32x32.png',
     '/font/Barlow-Light.ttf',
-    '/font/Barlow-Medium.ttf',
     '/font/Barlow-Regular.ttf',
     // new Request('http://localhost:3000/api/images/single?format=portrait', {headers: headers})
     new Request('https://beiboot.herokuapp.com/api/images/single?format=portrait', {headers: headers})
@@ -26,18 +23,14 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(cacheName)
             .then(cache => {
-                const b = cache.addAll(precacheResources);
-                console.log(cache);
-                return b;
+                return cache.addAll(precacheResources);
             })
     );
 });
 
 self.addEventListener('activate', event => {
     console.log('Service worker',  'activated', event);
-
     const cacheWhitelist = [cacheName];
-
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
