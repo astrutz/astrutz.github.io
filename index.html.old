@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <title>Heizkosten</title>
+    </head>
+    <body style="margin: 20px;">
+        <h1>WG-Heizkostenrechner</h1>
+        <h4>Preisangaben sind in EUR zu machen, Vorjahreswerte (18/19) als Platzhalter.</h4>
+
+        <span>Grundkosten</span>
+        <input type="number" id="grundkosten" placeholder="769,14"><br><br>
+
+        <span>Preis pro Heizeinheit</span>
+        <input type="number" id="preisProEinheit" placeholder="0,063"><br><br>
+
+        <span>Heizkostenbeitrag pro Monat (Alex)</span>
+        <input type="number" id="heizkostenProMonat" placeholder="35,47"><br><br>
+
+        <span>Heizeinheiten Küche</span>
+        <input type="number" id="küche" placeholder="462"><br><br>
+
+        <span>Heizeinheiten Wohnzimmer</span>
+        <input type="number" id="wohnzimmer" placeholder="482"><br><br>
+
+        <span>Heizeinheiten Bad</span>
+        <input type="number" id="bad" placeholder="373"><br><br>
+
+        <span>Heizeinheiten Gäste-WC</span>
+        <input type="number" id="wc" placeholder="2"><br><br>
+
+        <span>Heizeinheiten Alex</span>
+        <input type="number" id="alex" placeholder="319"><br><br>
+
+        <button type="button">Berechnen</button><br><br>
+
+        <span id="result"></span>
+
+    </body>
+    <script>
+        $('button').on('click', () => {
+            calcCost();
+        });
+
+        function calcCost(){
+            const basicCost = $('#grundkosten').val() ? parseFloat($('#grundkosten').val().replace(',', '.')) / 3 : parseFloat($('#grundkosten').attr('placeholder').replace(',', '.')) / 3;
+            const pricePerUnit = $('#preisProEinheit').val() ? parseFloat($('#preisProEinheit').val().replace(',', '.')) : parseFloat($('#preisProEinheit').attr('placeholder').replace(',', '.'));
+            const pricePerMonth = $('#heizkostenProMonat').val() ? parseFloat($('#heizkostenProMonat').val().replace(',', '.')) : parseFloat($('#heizkostenProMonat').attr('placeholder').replace(',', '.'));
+            const kitchen = $('#küche').val() ? parseFloat($('#küche').val().replace(',', '.')) : parseFloat($('#küche').attr('placeholder').replace(',', '.'));
+            const living = $('#wohnzimmer').val() ? parseFloat($('#wohnzimmer').val().replace(',', '.')) : parseFloat($('#wohnzimmer').attr('placeholder').replace(',', '.'));
+            const bath = $('#bad').val() ? parseFloat($('#bad').val().replace(',', '.')) : parseFloat($('#bad').attr('placeholder').replace(',', '.'));
+            const wc = $('#wc').val() ? parseFloat($('#wc').val().replace(',', '.')) : parseFloat($('#wc').attr('placeholder').replace(',', '.'));
+            const alex = $('#alex').val() ? parseFloat($('#alex').val().replace(',', '.')) : parseFloat($('#alex').attr('placeholder').replace(',', '.'));
+
+            const allUnits = alex + ((kitchen + living + bath + wc) / 3)
+            const usageCost = allUnits * pricePerUnit;
+            const cost = basicCost + usageCost - (pricePerMonth * 12);
+
+            $('#result').text(`Alex muss ${cost > 0 ? Math.round(cost) : Math.round(cost * -1)}€ ${cost > 0 ? 'nachzahlen' : 'zurückbekommen'}.`);
+        }
+    </script>
+    <style>
+        input {
+            position: absolute;
+            left: 300px;
+        }
+    </style>
+</html>

@@ -1,67 +1,100 @@
-<html>
-    <head>
-        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
-        <title>Heizkosten</title>
-    </head>
-    <body style="margin: 20px;">
-        <h1>WG-Heizkostenrechner</h1>
-        <h4>Preisangaben sind in EUR zu machen, Vorjahreswerte (18/19) als Platzhalter.</h4>
+<!DOCTYPE html>
+<html lang="de">
 
-        <span>Grundkosten</span>
-        <input type="number" id="grundkosten" placeholder="769,14"><br><br>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Cranach Karte</title>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel="stylesheet" type="text/css" href='css/style.css'>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.10.1/mapbox-gl-language.js'></script>
+  <script src="js/script.js"></script>
+</head>
 
-        <span>Preis pro Heizeinheit</span>
-        <input type="number" id="preisProEinheit" placeholder="0,063"><br><br>
+<body>
+  <div class="container-fluid main-container p-0 full-height d-flex">
+    <div class="flex-fill">
+      <div id="map" class="full-height">
+        <div class="container overlaybox">
+          <ul class="nav nav-tabs" id="tabList" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="searchTab" data-bs-toggle="tab" href="#home" role="tab"
+                aria-controls="home" aria-selected="true">Suche</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="datedTab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+                aria-selected="false">Datierung</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="row row-searchbar">
+                <div class="input-group mb-3 has-searchbar">
+                  <input id="searchInput" type="text" class="form-control" placeholder="Titel oder Stadt">
+                  <div class="input-group-append">
+                    <button class="btn-reset-search btn btn-outline-secondary" type="button">
+                      <span class="bi bi-arrow-counterclockwise"></span>
+                    </button>
+                  </div>
+                  <div class="input-group-append">
+                    <button class="btn-click-search btn btn-outline-secondary" type="button">
+                      <span class="bi bi-search"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="row row-year-filter">
+                <div class="input-group mb-3 has-filterbar">
+                  <input type="number" id="input-year-start" class="form-control" placeholder="Jahr"
+                    aria-label="Datierungsbeginn">
+                  <span class="input-group-text filter-separatorblock">-</span>
+                  <input type="number" id="input-year-end" class="form-control" placeholder="Jahr"
+                    aria-label="Datierungsende">
+                  <div class="input-group-append">
+                    <div class="input-group-append">
+                      <button class="btn-reset-year btn btn-outline-secondary" type="button">
+                        <span class="bi bi-arrow-counterclockwise"></span>
+                      </button>
+                    </div>
+                    <button class="btn-filter-year btn btn-outline-secondary" type="button">
+                      <span class="bi bi-search"></span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="toggle-result-visibility" class="container">
+          <button class="btn btn-light btn-switch" type="button">
+            <span class="bi bi-chevron-left"></span>
+            <span class="bi bi-chevron-right"></span>
+          </button>
+        </div>
+        <div class="card result-container">
+          <div class="card-header result-container-header">
+            <label id="resultCount" text="Zahl"></label> Ergebnisse gefunden
+          </div>
+          <div class="card-body result-container-body">
+            <div class="search-result"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+    integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+    crossorigin="anonymous"></script>
+</body>
 
-        <span>Heizkostenbeitrag pro Monat (Alex)</span>
-        <input type="number" id="heizkostenProMonat" placeholder="35,47"><br><br>
-
-        <span>Heizeinheiten Küche</span>
-        <input type="number" id="küche" placeholder="462"><br><br>
-
-        <span>Heizeinheiten Wohnzimmer</span>
-        <input type="number" id="wohnzimmer" placeholder="482"><br><br>
-
-        <span>Heizeinheiten Bad</span>
-        <input type="number" id="bad" placeholder="373"><br><br>
-
-        <span>Heizeinheiten Gäste-WC</span>
-        <input type="number" id="wc" placeholder="2"><br><br>
-
-        <span>Heizeinheiten Alex</span>
-        <input type="number" id="alex" placeholder="319"><br><br>
-
-        <button type="button">Berechnen</button><br><br>
-
-        <span id="result"></span>
-
-    </body>
-    <script>
-        $('button').on('click', () => {
-            calcCost();
-        });
-
-        function calcCost(){
-            const basicCost = $('#grundkosten').val() ? parseFloat($('#grundkosten').val().replace(',', '.')) / 3 : parseFloat($('#grundkosten').attr('placeholder').replace(',', '.')) / 3;
-            const pricePerUnit = $('#preisProEinheit').val() ? parseFloat($('#preisProEinheit').val().replace(',', '.')) : parseFloat($('#preisProEinheit').attr('placeholder').replace(',', '.'));
-            const pricePerMonth = $('#heizkostenProMonat').val() ? parseFloat($('#heizkostenProMonat').val().replace(',', '.')) : parseFloat($('#heizkostenProMonat').attr('placeholder').replace(',', '.'));
-            const kitchen = $('#küche').val() ? parseFloat($('#küche').val().replace(',', '.')) : parseFloat($('#küche').attr('placeholder').replace(',', '.'));
-            const living = $('#wohnzimmer').val() ? parseFloat($('#wohnzimmer').val().replace(',', '.')) : parseFloat($('#wohnzimmer').attr('placeholder').replace(',', '.'));
-            const bath = $('#bad').val() ? parseFloat($('#bad').val().replace(',', '.')) : parseFloat($('#bad').attr('placeholder').replace(',', '.'));
-            const wc = $('#wc').val() ? parseFloat($('#wc').val().replace(',', '.')) : parseFloat($('#wc').attr('placeholder').replace(',', '.'));
-            const alex = $('#alex').val() ? parseFloat($('#alex').val().replace(',', '.')) : parseFloat($('#alex').attr('placeholder').replace(',', '.'));
-
-            const allUnits = alex + ((kitchen + living + bath + wc) / 3)
-            const usageCost = allUnits * pricePerUnit;
-            const cost = basicCost + usageCost - (pricePerMonth * 12);
-
-            $('#result').text(`Alex muss ${cost > 0 ? Math.round(cost) : Math.round(cost * -1)}€ ${cost > 0 ? 'nachzahlen' : 'zurückbekommen'}.`);
-        }
-    </script>
-    <style>
-        input {
-            position: absolute;
-            left: 300px;
-        }
-    </style>
 </html>
